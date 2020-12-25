@@ -44,12 +44,18 @@ export function contextMenus(opts) {
                   // If selector of the item matches then show
                   target.is(menuItem.selector);
               // User clicked on empty area and menuItem is core
-              if (shouldDisplay && menuItem.show) {
-                cxtMenu.display();
+              if (shouldDisplay) {
+	          let show = menuItem.show;
+	          if(show instanceof Function) {
+	              show = show(event, menuItem);
+	          }
+	          if(show) {
+                      cxtMenu.display();
 
-                // anyVisibleChild indicates if there is any visible child of context menu if not do not show the context menu
-                setScratchProp('anyVisibleChild', true); // there is visible child
-                menuItem.display();
+                      // anyVisibleChild indicates if there is any visible child of context menu if not do not show the context menu
+                      setScratchProp('anyVisibleChild', true); // there is visible child
+                      menuItem.display();
+	          }
               }
           }
       }
